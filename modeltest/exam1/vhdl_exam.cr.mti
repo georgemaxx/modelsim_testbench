@@ -1,0 +1,8 @@
+C:/Users/nxf66096/Desktop/modeltest/exam1/clkdiv_tb.vhd {1 {vcom -work work1 -2002 -explicit C:/Users/nxf66096/Desktop/modeltest/exam1/clkdiv_tb.vhd
+Model Technology ModelSim ALTERA vcom 6.6d Compiler 2010.11 Nov  2 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity tb
+-- Compiling architecture behavior of tb
+
+} {} {}}

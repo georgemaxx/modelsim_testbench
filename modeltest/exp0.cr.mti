@@ -1,0 +1,8 @@
+C:/Users/nxf66096/Desktop/modeltest/divider.v {1 {vlog -work workspace -nocovercells C:/Users/nxf66096/Desktop/modeltest/divider.v
+Model Technology ModelSim ALTERA vlog 6.6d Compiler 2010.11 Nov  2 2010
+-- Compiling module divider
+
+Top level modules:
+	divider
+
+} {} {}}

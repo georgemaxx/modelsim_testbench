@@ -1,0 +1,37 @@
+m255
+K3
+13
+cModel Technology
+Z0 dC:\Users\nxf66096\Desktop
+vdivider
+Z1 !s100 IWoE_YHmW3bG`C`:1=Z9=2
+Z2 I`i^[^@>Dh9m3JAlZ54T5U0
+Z3 VOU1jV`o=UVU9EiMJBkh^F1
+Z4 dC:\Users\nxf66096\Desktop\modeltest
+Z5 w1605712716
+Z6 8C:/Users/nxf66096/Desktop/modeltest/divider.v
+Z7 FC:/Users/nxf66096/Desktop/modeltest/divider.v
+L0 1
+Z8 OV;L;6.6d;45
+r1
+31
+Z9 !s102 -nocovercells
+Z10 o-work workspace -nocovercells -O0
+!s85 0
+!s101 -O0
+vtb
+!s100 @Wm=LZe<CVM:US3W]YczB2
+I_b^?>RTz1f96Ug6fW?0eF1
+Z11 VV@Xn<HnSRM[I5c1?BH]3a3
+R4
+w1607328779
+Z12 8C:/Users/nxf66096/Desktop/modeltest/tb.v
+Z13 FC:/Users/nxf66096/Desktop/modeltest/tb.v
+L0 2
+R8
+r1
+!s85 0
+31
+!s101 -O0
+R9
+R10
