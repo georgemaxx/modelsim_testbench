@@ -1,6 +1,7 @@
-`timescale 1ns/1ns
+`timescale 1ns/1ps   // 20.335 can be recognized
 module tb;
 
+// register variable is modified in initial block or always block
 reg clk_in;
 reg rst_n;
 wire clk_out;
@@ -9,6 +10,11 @@ reg a_in;
 reg a_in_1;
 wire b_out;
 
+reg [31:0] t1 = 0;
+reg [31:0] t2 = 0;
+reg [31:0] t = 0;
+
+/**********************************************************/
 // test
 reg ref_clk = 0;
 always #10 ref_clk = ~ref_clk;
@@ -17,9 +23,11 @@ reg tclk;
 initial
 begin
   tclk = 0;
-  repeat (100) @(posedge ref_clk);
-  forever #(20.335) tclk = ~tclk;
+  repeat (100) @(posedge ref_clk);// similar to delay
+  forever #(20.335) tclk = ~tclk;// implement clock feature
 end
+/**********************************************************/
+
 
 initial
 begin
@@ -44,6 +52,7 @@ begin
   a_in_1 = 1;
   //#10 a_in = 1;
   //#10 a_in = 0;
+  #1000 a_in_1 = 0;
 end
 
 divider D1(
@@ -54,6 +63,83 @@ divider D1(
   .b(b_out)
 );
 
+/**************************************************/
+// generate uart clock
+reg uart_clk = 0;
+always #10 uart_clk = ~uart_clk;
 
+// generate one signal
+reg rx_in;
+initial
+begin
+  rx_in = 1;
+  #500 rx_in = 0;
+  #50 rx_in = 1;
+  #450 rx_in = 0;  // start bit
+  #200 rx_in = 1;
+  #200 rx_in = 0;
+  #200 rx_in = 1;
+  #200 rx_in = 0;
+  #200 rx_in = 1;
+  #200 rx_in = 0;
+  #200 rx_in = 1;
+  #200 rx_in = 0;
+  #200 rx_in = 1; // stop bit
+end
+
+// detect start bit
+reg rclk = 0;
+reg pre_rx = 0;
+always@(posedge uart_clk)
+begin
+  pre_rx = rx_in;
+  while(!(pre_rx === 1 && rx_in === 0))
+  begin
+    pre_rx = rx_in;
+    repeat (1) @(posedge uart_clk);  
+  end
+  forever #(t/2) rclk = ~rclk;
+end
+
+// calculate the frequency of uart_clk
+initial
+begin
+  @(posedge uart_clk);
+  t1 = $time;
+  @(posedge uart_clk);
+  t2 = $time;
+  t = t2 - t1;
+end
+
+reg rx_flag = 0;
+reg flag_en = 1;
+always@(negedge uart_clk)
+begin
+  pre_rx = 1;
+  if(flag_en) begin
+    if(pre_rx === 1 && rx_in === 0) begin
+      rx_flag = 1;
+      flag_en = 0;
+    end
+  end
+end
+
+reg clk_en = 0;
+always@(negedge uart_clk)
+begin
+  if(rx_flag)
+    if(pre_rx === 1 && rx_in === 1) begin
+      clk_en = 1;
+    end
+end
+
+reg aclk = 0;
+always@(posedge rclk)
+begin
+  aclk = ~aclk;
+end
+
+
+// verify the execution of task
 
 endmodule
