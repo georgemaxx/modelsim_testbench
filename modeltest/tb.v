@@ -73,8 +73,8 @@ reg rx_in;
 initial
 begin
   rx_in = 1;
-  #500 rx_in = 0;
-  #50 rx_in = 1;
+  #495 rx_in = 0;
+  #17 rx_in = 1;
   #450 rx_in = 0;  // start bit
   #200 rx_in = 1;
   #200 rx_in = 0;
@@ -96,10 +96,22 @@ begin
   while(!(pre_rx === 1 && rx_in === 0))
   begin
     pre_rx = rx_in;
-    repeat (1) @(posedge uart_clk);  
+    repeat (3) @(negedge uart_clk);  
   end
   forever #(t/2) rclk = ~rclk;
 end
+
+reg rx_in_1 = 0;
+reg rx_in_2 = 0;
+// filter glitch which costs less than one cycle
+// if glitch costs more than one cycle and less
+// than two cycles, 3-stage DFF can be used.
+always@(posedge uart_clk)
+begin
+  rx_in_1 <= rx_in;
+  rx_in_2 <= rx_in_1;
+end
+wire sci_rx = rx_in_1 | rx_in_2;
 
 // calculate the frequency of uart_clk
 initial
@@ -136,7 +148,8 @@ end
 reg aclk = 0;
 always@(posedge rclk)
 begin
-  aclk = ~aclk;
+  if(rx_in === 0)
+    aclk = ~aclk;
 end
 
 
